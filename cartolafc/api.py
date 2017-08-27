@@ -44,6 +44,7 @@ class Api(object):
 
         raise CartolaFCError(body['userMessage'])
 
+    @RequiresAuthentication
     def obter_time_logado(self):
         url = "{api_url}/auth/time".format(api_url=self._api_url)
         data = self._request(url)
