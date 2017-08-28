@@ -20,3 +20,11 @@ def test_obter_time_logado():
     api = Api(email="aleyoshimatsu@gmail.com", password="yoshi123")
     api.login()
     api.obter_time_logado()
+    assert True
+
+
+# def test_obter_parciais():
+#     api = Api(email="aleyoshimatsu@gmail.com", password="yoshi123")
+#     api.login()
+#     api.obter_parciais()
+#     assert True
