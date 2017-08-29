@@ -19,7 +19,7 @@ def test_login_erro():
 def test_obter_time_logado():
     api = Api(email="aleyoshimatsu@gmail.com", password="yoshi123")
     api.login()
-    api.obter_time_logado()
+    time_info = api.obter_time_logado()
     assert True
 
 

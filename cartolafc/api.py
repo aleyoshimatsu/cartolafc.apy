@@ -3,7 +3,7 @@
 import requests
 from .errors import CartolaFCError
 from.util import convert_json_to_data
-from .models import Atleta, Clube, Posicao, AtletaStatus
+from .models import Atleta, Clube, Posicao, AtletaStatus, Time, TimeInfo, Servico
 
 
 class RequiresAuthentication(object):
@@ -55,56 +55,79 @@ class Api(object):
 
         # Parsing Posicao
         data_posicoes = data['posicoes'].values()
-        posicoes = dict()
-
-        for data_posicao in data_posicoes:
-            posicao = Posicao(id=data_posicao['id'],
-                              nome=data_posicao['nome'],
-                              abreviacao=data_posicao['abreviacao'])
-            posicoes[data_posicao['id']] = posicao
+        posicoes = dict((data_posicao['id'], Posicao.parse_json(data_posicao)) for data_posicao in data_posicoes)
 
         # Parsing Status Atleta
         data_status = data['status'].values()
-        atleta_status = dict()
-
-        for data_st in data_status:
-            st = AtletaStatus(id=data_st['id'], nome=data_st['nome'])
-            atleta_status[data_st['id']] = st
+        atleta_status = dict((data_st['id'], AtletaStatus.parse_json(data_st)) for data_st in data_status)
 
         # Parsing clubes
         data_clubes = data['clubes'].values()
-        clubes = dict()
-
-        for data_clube in data_clubes:
-            clube = Clube(id=data_clube['id'],
-                          nome=data_clube['nome'],
-                          abreviacao=data_clube['abreviacao'],
-                          posicao=data_clube['posicao'],
-                          escudos=data_clube['escudos'])
-            clubes[data_clube['id']] = clube
+        clubes = dict((data_clube['id'], Clube.parse_json(data_clube)) for data_clube in data_clubes)
 
         # Parsing atletas
         data_atletas = data['atletas']
-        atletas = list()
+        atletas = list(Atleta.parse_json(data_atleta, clubes, posicoes, atleta_status) for data_atleta in data_atletas)
 
-        for data_atleta in data_atletas:
-            atleta = Atleta(nome=data_atleta['nome'],
-                            apelido=data_atleta['apelido'],
-                            foto=data_atleta['foto'],
-                            atleta_id=data_atleta['atleta_id'],
-                            rodada_id=data_atleta['rodada_id'],
-                            clube=clubes[data_atleta['clube_id']],
-                            posicao=posicoes[data_atleta['posicao_id']],
-                            status=atleta_status[data_atleta['status_id']],
-                            pontos_num=data_atleta['pontos_num'],
-                            preco_num=data_atleta['preco_num'],
-                            variacao_num=data_atleta['variacao_num'],
-                            media_num=data_atleta['media_num'],
-                            jogos_num=data_atleta['jogos_num'],
-                            scout=data_atleta['scout'])
-            atletas.append(atleta)
+        # Parsing time
+        data_time = data['time']
+        time = Time(
+            time_id=data_time['time_id'],
+            clube=clubes[data_time['clube_id']],
+            esquema_id=data_time['esquema_id'],
+            cadun_id=data_time['cadun_id'],
+            facebook_id=data_time['facebook_id'],
+            foto_perfil=data_time['foto_perfil'],
+            nome=data_time['nome'],
+            nome_cartola=data_time['nome_cartola'],
+            slug=data_time['slug'],
+            tipo_escudo=data_time['tipo_escudo'],
+            cor_fundo_escudo=data_time['cor_fundo_escudo'],
+            cor_borda_escudo=data_time['cor_borda_escudo'],
+            cor_primaria_estampa_escudo=data_time['cor_primaria_estampa_escudo'],
+            cor_secundaria_estampa_escudo=data_time['cor_secundaria_estampa_escudo'],
+            url_escudo_svg=data_time['url_escudo_svg'],
+            url_escudo_png=data_time['url_escudo_png'],
+            url_camisa_svg=data_time['url_camisa_svg'],
+            url_camisa_png=data_time['url_camisa_png'],
+            url_escudo_placeholder_png=data_time['url_escudo_placeholder_png'],
+            url_camisa_placeholder_png=data_time['url_camisa_placeholder_png'],
+            tipo_estampa_escudo=data_time['tipo_estampa_escudo'],
+            tipo_adorno=data_time['tipo_adorno'],
+            tipo_camisa=data_time['tipo_camisa'],
+            tipo_estampa_camisa=data_time['tipo_estampa_camisa'],
+            cor_camisa=data_time['cor_camisa'],
+            cor_primaria_estampa_camisa=data_time['cor_primaria_estampa_camisa'],
+            cor_secundaria_estampa_camisa=data_time['cor_secundaria_estampa_camisa'],
+            rodada_time_id=data_time['rodada_time_id'],
+            assinante=data_time['assinante'],
+            cadastro_completo=data_time['cadastro_completo'],
+            patrocinador1_id=data_time['patrocinador1_id'],
+            patrocinador2_id=data_time['patrocinador2_id'],
+            temporada_inicial=data_time['temporada_inicial'],
+            simplificado=data_time['simplificado']
+        )
 
+        # Parsing time info
+        time_info = TimeInfo(
+            atletas=atletas,
+            clubes=clubes,
+            posicoes=posicoes,
+            atleta_status=atleta_status,
+            time=time,
+            patrimonio=data['patrimonio'],
+            esquema_id=data['esquema_id'],
+            pontos=data['pontos'],
+            valor_time=data['valor_time'],
+            rodada_atual=data['rodada_atual'],
+            variacao_patrimonio=data['variacao_patrimonio'],
+            variacao_pontos=data['variacao_pontos'],
+            servicos=[Servico(data_servico['servicoId'], data_servico['status']) for data_servico in data['servicos']],
+            total_ligas=data['total_ligas'],
+            total_ligas_matamata=data['total_ligas_matamata']
+        )
 
+        return time_info
 
 
     def obter_status_mercado(self):
