@@ -23,6 +23,12 @@ def test_obter_time_logado():
     assert True
 
 
+def test_obter_status_mercado():
+    api = Api(email="aleyoshimatsu@gmail.com", password="yoshi123")
+    api.login()
+    api.obter_status_mercado()
+
+
 # def test_obter_parciais():
 #     api = Api(email="aleyoshimatsu@gmail.com", password="yoshi123")
 #     api.login()
