@@ -1,6 +1,7 @@
 # encoding: utf-8
 from cartolafc.api import Api
 from cartolafc.errors import CartolaFCError
+from cartolafc.models import MercadoStatus
 
 
 def test_login_sucesso():
@@ -26,11 +27,18 @@ def test_obter_time_logado():
 def test_obter_status_mercado():
     api = Api(email="aleyoshimatsu@gmail.com", password="yoshi123")
     api.login()
-    api.obter_status_mercado()
+    mercado_status = api.obter_status_mercado()
+    assert mercado_status.status_mercado == MercadoStatus.MERCADO_ABERTO
 
 
-# def test_obter_parciais():
-#     api = Api(email="aleyoshimatsu@gmail.com", password="yoshi123")
-#     api.login()
-#     api.obter_parciais()
-#     assert True
+def test_obter_atleta_pontuacao():
+    api = Api(email="aleyoshimatsu@gmail.com", password="yoshi123")
+    api.login()
+    atleta_pontuacao = api.obter_atleta_pontuacao(id=81905)
+    assert atleta_pontuacao.count() > 0
+
+def test_obter_atleta_pontuados():
+    api = Api(email="aleyoshimatsu@gmail.com", password="yoshi123")
+    api.login()
+    api.obter_atleta_pontuados()
+    assert True

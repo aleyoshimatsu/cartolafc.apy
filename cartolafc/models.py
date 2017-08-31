@@ -259,7 +259,7 @@ class TimeInfo(object):
         self.total_ligas_matamata = total_ligas_matamata
 
     def __str__(self):
-        return "{time_id}-{nome}".format(time_id=self.time_id, nome=self.nome)
+        return "{time_id}-{nome}".format(time_id=self.time.time_id, nome=self.time.nome)
 
     @classmethod
     def parse_json(cls, data, atletas, clubes, posicoes, atleta_status, time):
@@ -280,3 +280,40 @@ class TimeInfo(object):
             total_ligas=data['total_ligas'],
             total_ligas_matamata=data['total_ligas_matamata']
         )
+
+
+class AtletaPontuacao(object):
+
+    def __init__(self, atleta_id, rodada_id, pontos, preco, variacao, media):
+        self.atleta_id = atleta_id
+        self.rodada_id = rodada_id
+        self.pontos = pontos
+        self.preco = preco
+        self.variacao = variacao
+        self.media = media
+
+    def __str__(self):
+        return "{atleta_id}-{nome}".format(atleta_id=self.atleta_id, nome=self.time.nome)
+
+    @classmethod
+    def parse_json(cls, data):
+        return cls(data['atleta_id'], data['rodada_id'], data['pontos'], data['preco'], data['variacao'], data['media'])
+
+
+class AtletaPontuado(object):
+
+    def __init__(self, apelido, pontuacao, scout, foto, posicao_id, clube_id):
+        self.apelido = apelido
+        self.pontuacao = pontuacao
+        self.scout = scout
+        self.foto = foto
+        self.posicao_id = posicao_id
+        self.clube_id = clube_id
+
+    def __str__(self):
+        return "{apelido}={pontuacao}".format(apelido=self.apelido, pontuacao=self.pontuacao)
+
+    @classmethod
+    def parse_json(cls, data):
+        return cls(data['apelido'], data['pontuacao'], data['scout'],
+                   data['foto'], data['posicao_id'], data['clube_id'])

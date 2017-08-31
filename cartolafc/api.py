@@ -3,7 +3,7 @@
 import requests
 from .errors import CartolaFCError
 from.util import convert_json_to_data
-from .models import Atleta, Clube, Posicao, AtletaStatus, Time, TimeInfo, MercadoStatus
+from .models import Atleta, Clube, Posicao, AtletaStatus, Time, TimeInfo, MercadoStatus, AtletaPontuacao, AtletaPontuado
 
 
 class RequiresAuthentication(object):
@@ -82,12 +82,24 @@ class Api(object):
         mercado_status = MercadoStatus.parse_json(data)
         return mercado_status
 
-    def obter_parciais(self):
-        # if self.mercado().status.id == MERCADO_FECHADO:
+    def obter_atleta_pontuacao(self, id):
+        url = '{api_url}/auth/mercado/atleta/{id}/pontuacao'.format(api_url=self._api_url, id=id)
+        data = self._request(url)
+
+        return [AtletaPontuacao.parse_json(pontuacao_info) for pontuacao_info in data]
+
+    def obter_atleta_pontuados(self):
+        mercado = self.obter_status_mercado()
+        if mercado.status.id == MercadoStatus.MERCADO_FECHADO:
             url = '{api_url}/atletas/pontuados'.format(api_url=self._api_url)
             data = self._request(url)
 
-        # raise CartolaFCError('As pontuações parciais só ficam disponíveis com o mercado fechado.')
+            data_atletas = data['atletas']
+            atletas_pontuados = dict((data_atletas['id'], AtletaPontuado.parse_json(data_atleta))
+                                    for data_atleta in data_atletas)
+            return atletas_pontuados
+
+        raise CartolaFCError('Pontuações parciais indisponíveis! Mercado aberto.')
 
     def _request(self, url, params=None):
         attempts = self._attempts
