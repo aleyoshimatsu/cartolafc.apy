@@ -3,7 +3,8 @@
 import requests
 from .errors import CartolaFCError
 from.util import convert_json_to_data
-from .models import Atleta, Clube, Posicao, AtletaStatus, Time, TimeInfo, MercadoStatus, AtletaPontuacao, AtletaPontuado
+from .models import Atleta, Clube, Posicao, AtletaStatus, Time, TimeInfo, MercadoStatus, AtletaPontuacao, \
+    AtletaPontuado, Liga, Amigo, TimeUsuario
 
 
 class RequiresAuthentication(object):
@@ -67,10 +68,10 @@ class Api(object):
 
         # Parsing time
         data_time = data['time']
-        time = Time.parse_json(data_time, clubes)
+        time_usuario = TimeUsuario.parse_json(data_time, clubes)
 
         # Parsing time info
-        time_info = TimeInfo.parse_json(data, atletas, clubes, posicoes, atleta_status, time)
+        time_info = TimeInfo.parse_json(data, atletas, clubes, posicoes, atleta_status, time_usuario)
 
         return time_info
 
@@ -90,7 +91,7 @@ class Api(object):
 
     def obter_atleta_pontuados(self):
         mercado = self.obter_status_mercado()
-        if mercado.status.id == MercadoStatus.MERCADO_FECHADO:
+        if mercado.status_mercado.id == MercadoStatus.MERCADO_FECHADO:
             url = '{api_url}/atletas/pontuados'.format(api_url=self._api_url)
             data = self._request(url)
 
@@ -100,6 +101,69 @@ class Api(object):
             return atletas_pontuados
 
         raise CartolaFCError('Pontuações parciais indisponíveis! Mercado aberto.')
+
+    def obter_ligas_time_logado(self):
+        url = '{api_url}/auth/ligas'.format(api_url=self._api_url)
+        data = self._request(url)
+
+        # Parsing ligas
+        data_ligas = data['ligas']
+        ligas = []
+
+        for data_liga in data_ligas:
+            amigos = list(Amigo.parse_json(data_amigo) for data_amigo in data_liga['amigos']) if data_liga['amigos'] is not None else []
+            liga = Liga.parse_json(data_liga, amigos)
+            ligas.append(liga)
+
+        return ligas
+
+    def obter_time_by_slug(self, slug):
+        url = '{api_url}/time/slug/{slug}'.format(api_url=self._api_url, slug=slug)
+        data = self._request(url)
+
+        # Parsing atletas
+        data_atletas = data['atletas']
+
+        # Parsing clubes
+        data_clubes = data['clubes']
+
+        # Parsing posicoes
+        data_posicoes = data['posicoes']
+
+        # Parsing status
+        data_status = data['status']
+
+        # Parsing time
+        data_time = data['time']
+
+    def obter_liga_by_slug(self, slug):
+        url = '{api_url}/auth/liga/{slug}'.format(api_url=self._api_url, slug=slug)
+        data = self._request(url)
+
+        # Parsing times
+        data_times = data['times']
+        times = list(Time.parse_json(data_time) for data_time in data_times)
+
+        # Parsing time_usuario
+        data_time_usuario = data['time_usuario']
+
+        # Parsing amigos
+        data_amigos = data['amigos']
+
+        # Parsing destaques
+        data_destaques = data['destaques']
+
+        # Parsing liga
+        data_liga = data['liga']
+        liga = Liga.parse_json(data_liga)
+
+
+
+
+
+
+
+
 
     def _request(self, url, params=None):
         attempts = self._attempts

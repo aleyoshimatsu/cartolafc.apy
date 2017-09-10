@@ -1,8 +1,105 @@
 # encoding: utf-8
 
 
+class RankingTime(object):
+
+    def __init__(self, rodada, mes, turno, campeonato, patrimonio):
+        self.rodada = rodada
+        self.mes = mes
+        self.turno = turno
+        self.campeonato = campeonato
+        self.patrimonio = patrimonio
+
+    @classmethod
+    def parse_json(cls, data):
+        return cls(
+            rodada=data['rodada'],
+            mes=data['mes'],
+            turno=data['turno'],
+            campeonato=data['campeonato'],
+            patrimonio=data['patrimonio']
+        )
+
+
+class PontosTime(object):
+
+    def __init__(self, rodada, mes, turno, campeonato):
+        self.rodada = rodada
+        self.mes = mes
+        self.turno = turno
+        self.campeonato = campeonato
+
+    @classmethod
+    def parse_json(cls, data):
+        return cls(
+            rodada=data['rodada'],
+            mes=data['mes'],
+            turno=data['turno'],
+            campeonato=data['campeonato']
+        )
+
+
+class VariacaoTime(object):
+
+    def __init__(self, mes, turno, campeonato, patrimonio):
+        self.mes = mes
+        self.turno = turno
+        self.campeonato = campeonato
+        self.patrimonio = patrimonio
+
+    @classmethod
+    def parse_json(cls, data):
+        return cls(
+            mes=data['mes'],
+            turno=data['turno'],
+            campeonato=data['campeonato'],
+            patrimonio=data['patrimonio']
+        )
+
+
 class Time(object):
-    pass
+
+    def __init__(self, url_escudo_png, url_escudo_svg, url_placeholder_escudo_png, time_id, nome, nome_cartola, slug,
+                 facebook_id, url_escudo_placeholder_png, foto_perfil, assinante, patrimonio,
+                 ranking_time, pontos_time, variacao_time):
+        self.url_escudo_png = url_escudo_png
+        self.url_escudo_svg = url_escudo_svg
+        self.url_placeholder_escudo_png = url_placeholder_escudo_png
+        self.time_id = time_id
+        self.nome = nome
+        self.nome_cartola = nome_cartola
+        self.slug = slug
+        self.facebook_id = facebook_id
+        self.url_escudo_placeholder_png = url_escudo_placeholder_png
+        self.foto_perfil = foto_perfil
+        self.assinante = assinante
+        self.patrimonio = patrimonio
+        self.ranking_time = ranking_time
+        self.pontos_time = pontos_time
+        self.variacao_time = variacao_time
+
+    def __str__(self):
+        return "{id}-{slug}".format(id=self.time_id, slug=self.slug)
+
+    @classmethod
+    def parse_json(cls, data):
+        return cls(
+            url_escudo_png=data['url_escudo_png'],
+            url_escudo_svg=data['url_escudo_svg'],
+            url_placeholder_escudo_png=data['url_placeholder_escudo_png'],
+            time_id=data['time_id'],
+            nome=data['nome'],
+            nome_cartola=data['nome_cartola'],
+            slug=data['slug'],
+            facebook_id=data['facebook_id'],
+            url_escudo_placeholder_png=data['url_escudo_placeholder_png'],
+            foto_perfil=data['foto_perfil'],
+            assinante=data['assinante'],
+            patrimonio=data['patrimonio'],
+            ranking_time=RankingTime.parse_json(data['ranking']),
+            pontos_time=PontosTime.parse_json(data['pontos']),
+            variacao_time=VariacaoTime.parse_json(data['variacao'])
+        )
 
 
 class AtletaStatus(object):
@@ -112,11 +209,22 @@ class Atleta(object):
 
     @classmethod
     def parse_json(cls, data, clubes, posicoes, atleta_status):
-        return cls(nome=data['nome'], apelido=data['apelido'], foto=data['foto'], atleta_id=data['atleta_id'],
-                   rodada_id=data['rodada_id'], clube=clubes[data['clube_id']], posicao=posicoes[data['posicao_id']],
-                   status=atleta_status[data['status_id']], pontos_num=data['pontos_num'], preco_num=data['preco_num'],
-                   variacao_num=data['variacao_num'], media_num=data['media_num'], jogos_num=data['jogos_num'],
-                   scout=data['scout'])
+        return cls(
+            nome=data['nome'],
+            apelido=data['apelido'],
+            foto=data['foto'],
+            atleta_id=data['atleta_id'],
+            rodada_id=data['rodada_id'],
+            clube=clubes[data['clube_id']],
+            posicao=posicoes[data['posicao_id']],
+            status=atleta_status[data['status_id']],
+            pontos_num=data['pontos_num'],
+            preco_num=data['preco_num'],
+            variacao_num=data['variacao_num'],
+            media_num=data['media_num'],
+            jogos_num=data['jogos_num'],
+            scout=data['scout']
+        )
 
 
 class Clube(object):
@@ -133,11 +241,16 @@ class Clube(object):
 
     @classmethod
     def parse_json(cls, data):
-        return cls(id=data['id'], nome=data['nome'], abreviacao=data['abreviacao'],
-                   posicao=data['posicao'], escudos=data['escudos'])
+        return cls(
+            id=data['id'],
+            nome=data['nome'],
+            abreviacao=data['abreviacao'],
+            posicao=data['posicao'],
+            escudos=data['escudos']
+        )
 
 
-class Time(object):
+class TimeUsuario(object):
 
     def __init__(self, time_id, clube, esquema_id, cadun_id, facebook_id, foto_perfil, nome, nome_cartola, slug,
                  tipo_escudo, cor_fundo_escudo, cor_borda_escudo, cor_primaria_estampa_escudo,
@@ -240,13 +353,13 @@ class Servico(object):
 
 class TimeInfo(object):
 
-    def __init__(self, atletas, clubes, posicoes, atleta_status, time, patrimonio, esquema_id, pontos, valor_time,
+    def __init__(self, atletas, clubes, posicoes, atleta_status, time_usuario, patrimonio, esquema_id, pontos, valor_time,
                  rodada_atual, variacao_patrimonio, variacao_pontos, servicos, total_ligas, total_ligas_matamata):
         self.atletas = atletas
         self.clubes = clubes
         self.posicoes = posicoes
         self.atleta_status = atleta_status
-        self.time = time
+        self.time_usuario = time_usuario
         self.patrimonio = patrimonio
         self.esquema_id = esquema_id
         self.pontos = pontos
@@ -259,16 +372,16 @@ class TimeInfo(object):
         self.total_ligas_matamata = total_ligas_matamata
 
     def __str__(self):
-        return "{time_id}-{nome}".format(time_id=self.time.time_id, nome=self.time.nome)
+        return "{time_id}-{nome}".format(time_id=self.time_usuario.time_id, nome=self.time_usuario.nome)
 
     @classmethod
-    def parse_json(cls, data, atletas, clubes, posicoes, atleta_status, time):
+    def parse_json(cls, data, atletas, clubes, posicoes, atleta_status, time_usuario):
         return cls(
             atletas=atletas,
             clubes=clubes,
             posicoes=posicoes,
             atleta_status=atleta_status,
-            time=time,
+            time_usuario=time_usuario,
             patrimonio=data['patrimonio'],
             esquema_id=data['esquema_id'],
             pontos=data['pontos'],
@@ -297,7 +410,14 @@ class AtletaPontuacao(object):
 
     @classmethod
     def parse_json(cls, data):
-        return cls(data['atleta_id'], data['rodada_id'], data['pontos'], data['preco'], data['variacao'], data['media'])
+        return cls(
+            atleta_id=data['atleta_id'],
+            rodada_id=data['rodada_id'],
+            pontos=data['pontos'],
+            preco=data['preco'],
+            variacao=data['variacao'],
+            media=data['media']
+        )
 
 
 class AtletaPontuado(object):
@@ -315,5 +435,133 @@ class AtletaPontuado(object):
 
     @classmethod
     def parse_json(cls, data):
-        return cls(data['apelido'], data['pontuacao'], data['scout'],
-                   data['foto'], data['posicao_id'], data['clube_id'])
+        return cls(
+            apelido=data['apelido'],
+            pontuacao=data['pontuacao'],
+            scout=data['scout'],
+            foto=data['foto'],
+            posicao_id=data['posicao_id'],
+            clube_id=data['clube_id']
+        )
+
+
+class Liga(object):
+
+    def __init__(self, liga_id, time_dono_id, clube_id, nome, descricao, slug, tipo, tipo_flamula, tipo_estampa_flamula,
+                 tipo_adorno_flamula, cor_primaria_estampa_flamula, cor_secundaria_estampa_flamula, cor_borda_flamula,
+                 cor_fundo_flamula, url_flamula_svg, url_flamula_png, tipo_trofeu, cor_trofeu, url_trofeu_svg,
+                 url_trofeu_png, editorial, patrocinador, mata_mata, inicio_rodada, fim_rodada, quantidade_times,
+                 sorteada, mes_ranking_num, mes_variacao_num, camp_ranking_num, camp_variacao_num, imagem, amigos,
+                 total_amigos_na_liga, total_times_liga):
+        self.liga_id = liga_id
+        self.time_dono_id = time_dono_id
+        self.clube_id = clube_id
+        self.nome = nome
+        self.descricao = descricao
+        self.slug = slug
+        self.tipo = tipo
+        self.tipo_flamula = tipo_flamula
+        self.tipo_estampa_flamula = tipo_estampa_flamula
+        self.tipo_adorno_flamula = tipo_adorno_flamula
+        self.cor_primaria_estampa_flamula = cor_primaria_estampa_flamula
+        self.cor_secundaria_estampa_flamula = cor_secundaria_estampa_flamula
+        self.cor_borda_flamula = cor_borda_flamula
+        self.cor_fundo_flamula = cor_fundo_flamula
+        self.url_flamula_svg = url_flamula_svg
+        self.url_flamula_png = url_flamula_png
+        self.tipo_trofeu = tipo_trofeu
+        self.cor_trofeu = cor_trofeu
+        self.url_trofeu_svg = url_trofeu_svg
+        self.url_trofeu_png = url_trofeu_png
+        self.editorial = editorial
+        self.patrocinador = patrocinador
+        self.mata_mata = mata_mata
+        self.inicio_rodada = inicio_rodada
+        self.fim_rodada = fim_rodada
+        self.quantidade_times = quantidade_times
+        self.sorteada = sorteada
+        self.mes_ranking_num = mes_ranking_num
+        self.mes_variacao_num = mes_variacao_num
+        self.camp_ranking_num = camp_ranking_num
+        self.camp_variacao_num = camp_variacao_num
+        self.imagem = imagem
+        self.amigos = amigos
+        self.total_amigos_na_liga = total_amigos_na_liga
+        self.total_times_liga = total_times_liga
+
+    def __str__(self):
+        return "{liga_id}={nome}".format(liga_id=self.liga_id, nome=self.nome)
+
+    @classmethod
+    def parse_json(cls, data, amigos = None):
+        return cls(
+            liga_id=data["liga_id"],
+            time_dono_id=data["time_dono_id"],
+            clube_id=data["clube_id"],
+            nome=data["nome"],
+            descricao=data["descricao"],
+            slug=data["slug"],
+            tipo=data["tipo"],
+            tipo_flamula=data["tipo_flamula"],
+            tipo_estampa_flamula=data["tipo_estampa_flamula"],
+            tipo_adorno_flamula=data["tipo_adorno_flamula"],
+            cor_primaria_estampa_flamula=data["cor_primaria_estampa_flamula"],
+            cor_secundaria_estampa_flamula=data["cor_secundaria_estampa_flamula"],
+            cor_borda_flamula=data["cor_borda_flamula"],
+            cor_fundo_flamula=data["cor_fundo_flamula"],
+            url_flamula_svg=data["url_flamula_svg"],
+            url_flamula_png=data["url_flamula_png"],
+            tipo_trofeu=data["tipo_trofeu"],
+            cor_trofeu=data["cor_trofeu"],
+            url_trofeu_svg=data["url_trofeu_svg"],
+            url_trofeu_png=data["url_trofeu_png"],
+            editorial=data["editorial"],
+            patrocinador=data["patrocinador"],
+            mata_mata=data["mata_mata"],
+            inicio_rodada=data["inicio_rodada"],
+            fim_rodada=data["fim_rodada"],
+            quantidade_times=data["quantidade_times"],
+            sorteada=data["sorteada"],
+            mes_ranking_num=data["mes_ranking_num"],
+            mes_variacao_num=data["mes_variacao_num"],
+            camp_ranking_num=data["camp_ranking_num"],
+            camp_variacao_num=data["camp_variacao_num"],
+            imagem=data["imagem"],
+            amigos=amigos,
+            total_amigos_na_liga=data['total_amigos_na_liga'],
+            total_times_liga=data['total_times_liga']
+        )
+
+
+class Amigo(object):
+
+    def __init__(self, time_id, nome, nome_cartola, slug, facebook_id, url_escudo_png, url_escudo_svg,
+                 url_escudo_placeholder_png, foto_perfil, assinante):
+        self.time_id = time_id
+        self.nome = nome
+        self.nome_cartola = nome_cartola
+        self.slug = slug
+        self.facebook_id = facebook_id
+        self.url_escudo_png = url_escudo_png
+        self.url_escudo_svg = url_escudo_svg
+        self.url_escudo_placeholder_png = url_escudo_placeholder_png
+        self.foto_perfil = foto_perfil
+        self.assinante = assinante
+
+    def __str__(self):
+        return "{time_id}={nome}".format(time_id=self.time_id, nome=self.nome)
+
+    @classmethod
+    def parse_json(cls, data):
+        return cls(
+            time_id=data["time_id"],
+            nome=data["nome"],
+            nome_cartola=data["nome_cartola"],
+            slug=data["slug"],
+            facebook_id=data["facebook_id"],
+            url_escudo_png=data["url_escudo_png"],
+            url_escudo_svg=data["url_escudo_svg"],
+            url_escudo_placeholder_png=data["url_escudo_placeholder_png"],
+            foto_perfil=data["foto_perfil"],
+            assinante=data["assinante"]
+        )

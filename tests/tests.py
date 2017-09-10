@@ -37,8 +37,21 @@ def test_obter_atleta_pontuacao():
     atleta_pontuacao = api.obter_atleta_pontuacao(id=81905)
     assert atleta_pontuacao.count() > 0
 
+
 def test_obter_atleta_pontuados():
     api = Api(email="aleyoshimatsu@gmail.com", password="yoshi123")
     api.login()
     api.obter_atleta_pontuados()
     assert True
+
+
+def test_obter_ligas_time_logado():
+    api = Api(email="aleyoshimatsu@gmail.com", password="yoshi123")
+    api.login()
+    ligas = api.obter_ligas_time_logado()
+    assert ligas.count() > 0
+
+def test_obter_liga_by_slug():
+    api = Api(email="aleyoshimatsu@gmail.com", password="yoshi123")
+    api.login()
+    api.obter_liga_by_slug(slug='liga-showbol-2017')
