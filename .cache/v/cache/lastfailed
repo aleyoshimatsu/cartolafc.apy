@@ -1,0 +1,6 @@
+{
+  "tests/tests.py::test_obter_atleta_pontuacao": true,
+  "tests/tests.py::test_obter_atleta_pontuados": true,
+  "tests/tests.py::test_obter_ligas_time_logado": true,
+  "tests/tests.py::test_obter_status_mercado": true
+}
