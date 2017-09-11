@@ -1,4 +1,5 @@
 # encoding: utf-8
+from cartolafc.util import get_data
 
 
 class RankingTime(object):
@@ -13,11 +14,11 @@ class RankingTime(object):
     @classmethod
     def parse_json(cls, data):
         return cls(
-            rodada=data['rodada'],
-            mes=data['mes'],
-            turno=data['turno'],
-            campeonato=data['campeonato'],
-            patrimonio=data['patrimonio']
+            rodada=get_data(data, 'rodada'),
+            mes=get_data(data, 'mes'),
+            turno=get_data(data, 'turno'), 
+            campeonato=get_data(data, 'campeonato'), 
+            patrimonio=get_data(data, 'patrimonio')
         )
 
 
@@ -32,10 +33,10 @@ class PontosTime(object):
     @classmethod
     def parse_json(cls, data):
         return cls(
-            rodada=data['rodada'],
-            mes=data['mes'],
-            turno=data['turno'],
-            campeonato=data['campeonato']
+            rodada=get_data(data, 'rodada'), 
+            mes=get_data(data, 'mes'), 
+            turno=get_data(data, 'turno'), 
+            campeonato=get_data(data, 'campeonato')
         )
 
 
@@ -50,10 +51,10 @@ class VariacaoTime(object):
     @classmethod
     def parse_json(cls, data):
         return cls(
-            mes=data['mes'],
-            turno=data['turno'],
-            campeonato=data['campeonato'],
-            patrimonio=data['patrimonio']
+            mes=get_data(data, 'mes'), 
+            turno=get_data(data, 'turno'), 
+            campeonato=get_data(data, 'campeonato'), 
+            patrimonio=get_data(data, 'patrimonio')
         )
 
 
@@ -84,21 +85,21 @@ class Time(object):
     @classmethod
     def parse_json(cls, data):
         return cls(
-            url_escudo_png=data['url_escudo_png'],
-            url_escudo_svg=data['url_escudo_svg'],
-            url_placeholder_escudo_png=data['url_placeholder_escudo_png'],
-            time_id=data['time_id'],
-            nome=data['nome'],
-            nome_cartola=data['nome_cartola'],
-            slug=data['slug'],
-            facebook_id=data['facebook_id'],
-            url_escudo_placeholder_png=data['url_escudo_placeholder_png'],
-            foto_perfil=data['foto_perfil'],
-            assinante=data['assinante'],
-            patrimonio=data['patrimonio'],
-            ranking_time=RankingTime.parse_json(data['ranking']),
-            pontos_time=PontosTime.parse_json(data['pontos']),
-            variacao_time=VariacaoTime.parse_json(data['variacao'])
+            url_escudo_png=get_data(data, 'url_escudo_png'), 
+            url_escudo_svg=get_data(data, 'url_escudo_svg'), 
+            url_placeholder_escudo_png=get_data(data, 'url_placeholder_escudo_png'), 
+            time_id=get_data(data, 'time_id'), 
+            nome=get_data(data, 'nome'), 
+            nome_cartola=get_data(data, 'nome_cartola'), 
+            slug=get_data(data, 'slug'), 
+            facebook_id=get_data(data, 'facebook_id'), 
+            url_escudo_placeholder_png=get_data(data, 'url_escudo_placeholder_png'), 
+            foto_perfil=get_data(data, 'foto_perfil'), 
+            assinante=get_data(data, 'assinante'), 
+            patrimonio=get_data(data, 'patrimonio'), 
+            ranking_time=RankingTime.parse_json(get_data(data, 'ranking')),
+            pontos_time=PontosTime.parse_json(get_data(data, 'pontos')),
+            variacao_time=VariacaoTime.parse_json(get_data(data, 'variacao'))
         )
 
 
@@ -113,7 +114,7 @@ class AtletaStatus(object):
 
     @classmethod
     def parse_json(cls, data):
-        return cls(id=data['id'], nome=data['nome'])
+        return cls(id=get_data(data, 'id'),  nome=get_data(data, 'nome'))
 
 
 class MercadoStatus(object):
@@ -151,25 +152,26 @@ class MercadoStatus(object):
     @classmethod
     def parse_json(cls, data):
         return cls(
-            rodada_atual=data['rodada_atual'],
-            status_mercado=data['status_mercado'],
-            esquema_default_id=data['esquema_default_id'],
-            cartoleta_inicial=data['cartoleta_inicial'],
-            max_ligas_free=data['max_ligas_free'],
-            max_ligas_pro=data['max_ligas_pro'],
-            max_ligas_matamata_free=data['max_ligas_matamata_free'],
-            max_ligas_matamata_pro=data['max_ligas_matamata_pro'],
-            max_ligas_patrocinadas_free=data['max_ligas_patrocinadas_free'],
-            max_ligas_patrocinadas_pro_num=data['max_ligas_patrocinadas_pro_num'],
-            game_over=data['game_over'],
-            temporada=data['temporada'],
-            reativar=data['reativar'],
-            times_escalados=data['times_escalados'],
-            fechamento=data['fechamento'],
-            mercado_pos_rodada=data['mercado_pos_rodada'],
-            aviso=data['aviso'],
-            aviso_url=data['aviso_url']
+            rodada_atual=get_data(data, 'rodada_atual'), 
+            status_mercado=get_data(data, 'status_mercado'), 
+            esquema_default_id=get_data(data, 'esquema_default_id'), 
+            cartoleta_inicial=get_data(data, 'cartoleta_inicial'), 
+            max_ligas_free=get_data(data, 'max_ligas_free'), 
+            max_ligas_pro=get_data(data, 'max_ligas_pro'), 
+            max_ligas_matamata_free=get_data(data, 'max_ligas_matamata_free'), 
+            max_ligas_matamata_pro=get_data(data, 'max_ligas_matamata_pro'), 
+            max_ligas_patrocinadas_free=get_data(data, 'max_ligas_patrocinadas_free'), 
+            max_ligas_patrocinadas_pro_num=get_data(data, 'max_ligas_patrocinadas_pro_num'), 
+            game_over=get_data(data, 'game_over'), 
+            temporada=get_data(data, 'temporada'), 
+            reativar=get_data(data, 'reativar'), 
+            times_escalados=get_data(data, 'times_escalados'), 
+            fechamento=get_data(data, 'fechamento'), 
+            mercado_pos_rodada=get_data(data, 'mercado_pos_rodada'), 
+            aviso=get_data(data, 'aviso'), 
+            aviso_url=get_data(data, 'aviso_url')
         )
+
 
 class Posicao(object):
 
@@ -183,7 +185,7 @@ class Posicao(object):
 
     @classmethod
     def parse_json(cls, data):
-        return cls(id=data['id'], nome=data['nome'], abreviacao=data['abreviacao'])
+        return cls(id=get_data(data, 'id'),  nome=get_data(data, 'nome'),  abreviacao=get_data(data, 'abreviacao'))
 
 
 class Atleta(object):
@@ -210,20 +212,20 @@ class Atleta(object):
     @classmethod
     def parse_json(cls, data, clubes, posicoes, atleta_status):
         return cls(
-            nome=data['nome'],
-            apelido=data['apelido'],
-            foto=data['foto'],
-            atleta_id=data['atleta_id'],
-            rodada_id=data['rodada_id'],
-            clube=clubes[data['clube_id']],
-            posicao=posicoes[data['posicao_id']],
-            status=atleta_status[data['status_id']],
-            pontos_num=data['pontos_num'],
-            preco_num=data['preco_num'],
-            variacao_num=data['variacao_num'],
-            media_num=data['media_num'],
-            jogos_num=data['jogos_num'],
-            scout=data['scout']
+            nome=get_data(data, 'nome'), 
+            apelido=get_data(data, 'apelido'), 
+            foto=get_data(data, 'foto'), 
+            atleta_id=get_data(data, 'atleta_id'), 
+            rodada_id=get_data(data, 'rodada_id'), 
+            clube=clubes[get_data(data, 'clube_id')],
+            posicao=posicoes[get_data(data, 'posicao_id')],
+            status=atleta_status[get_data(data, 'status_id')],
+            pontos_num=get_data(data, 'pontos_num'), 
+            preco_num=get_data(data, 'preco_num'), 
+            variacao_num=get_data(data, 'variacao_num'), 
+            media_num=get_data(data, 'media_num'), 
+            jogos_num=get_data(data, 'jogos_num'), 
+            scout=get_data(data, 'scout')
         )
 
 
@@ -242,11 +244,11 @@ class Clube(object):
     @classmethod
     def parse_json(cls, data):
         return cls(
-            id=data['id'],
-            nome=data['nome'],
-            abreviacao=data['abreviacao'],
-            posicao=data['posicao'],
-            escudos=data['escudos']
+            id=get_data(data, 'id'), 
+            nome=get_data(data, 'nome'), 
+            abreviacao=get_data(data, 'abreviacao'), 
+            posicao=get_data(data, 'posicao'), 
+            escudos=get_data(data, 'escudos')
         )
 
 
@@ -300,40 +302,40 @@ class TimeUsuario(object):
     @classmethod
     def parse_json(cls, data, clubes):
         return cls(
-            time_id=data['time_id'],
-            clube=clubes[data['clube_id']],
-            esquema_id=data['esquema_id'],
-            cadun_id=data['cadun_id'],
-            facebook_id=data['facebook_id'],
-            foto_perfil=data['foto_perfil'],
-            nome=data['nome'],
-            nome_cartola=data['nome_cartola'],
-            slug=data['slug'],
-            tipo_escudo=data['tipo_escudo'],
-            cor_fundo_escudo=data['cor_fundo_escudo'],
-            cor_borda_escudo=data['cor_borda_escudo'],
-            cor_primaria_estampa_escudo=data['cor_primaria_estampa_escudo'],
-            cor_secundaria_estampa_escudo=data['cor_secundaria_estampa_escudo'],
-            url_escudo_svg=data['url_escudo_svg'],
-            url_escudo_png=data['url_escudo_png'],
-            url_camisa_svg=data['url_camisa_svg'],
-            url_camisa_png=data['url_camisa_png'],
-            url_escudo_placeholder_png=data['url_escudo_placeholder_png'],
-            url_camisa_placeholder_png=data['url_camisa_placeholder_png'],
-            tipo_estampa_escudo=data['tipo_estampa_escudo'],
-            tipo_adorno=data['tipo_adorno'],
-            tipo_camisa=data['tipo_camisa'],
-            tipo_estampa_camisa=data['tipo_estampa_camisa'],
-            cor_camisa=data['cor_camisa'],
-            cor_primaria_estampa_camisa=data['cor_primaria_estampa_camisa'],
-            cor_secundaria_estampa_camisa=data['cor_secundaria_estampa_camisa'],
-            rodada_time_id=data['rodada_time_id'],
-            assinante=data['assinante'],
-            cadastro_completo=data['cadastro_completo'],
-            patrocinador1_id=data['patrocinador1_id'],
-            patrocinador2_id=data['patrocinador2_id'],
-            temporada_inicial=data['temporada_inicial'],
-            simplificado=data['simplificado']
+            time_id=get_data(data, 'time_id'), 
+            clube=clubes[get_data(data, 'clube_id')],
+            esquema_id=get_data(data, 'esquema_id'), 
+            cadun_id=get_data(data, 'cadun_id'), 
+            facebook_id=get_data(data, 'facebook_id'), 
+            foto_perfil=get_data(data, 'foto_perfil'), 
+            nome=get_data(data, 'nome'), 
+            nome_cartola=get_data(data, 'nome_cartola'), 
+            slug=get_data(data, 'slug'), 
+            tipo_escudo=get_data(data, 'tipo_escudo'), 
+            cor_fundo_escudo=get_data(data, 'cor_fundo_escudo'), 
+            cor_borda_escudo=get_data(data, 'cor_borda_escudo'), 
+            cor_primaria_estampa_escudo=get_data(data, 'cor_primaria_estampa_escudo'), 
+            cor_secundaria_estampa_escudo=get_data(data, 'cor_secundaria_estampa_escudo'), 
+            url_escudo_svg=get_data(data, 'url_escudo_svg'), 
+            url_escudo_png=get_data(data, 'url_escudo_png'), 
+            url_camisa_svg=get_data(data, 'url_camisa_svg'), 
+            url_camisa_png=get_data(data, 'url_camisa_png'), 
+            url_escudo_placeholder_png=get_data(data, 'url_escudo_placeholder_png'), 
+            url_camisa_placeholder_png=get_data(data, 'url_camisa_placeholder_png'), 
+            tipo_estampa_escudo=get_data(data, 'tipo_estampa_escudo'), 
+            tipo_adorno=get_data(data, 'tipo_adorno'), 
+            tipo_camisa=get_data(data, 'tipo_camisa'), 
+            tipo_estampa_camisa=get_data(data, 'tipo_estampa_camisa'), 
+            cor_camisa=get_data(data, 'cor_camisa'), 
+            cor_primaria_estampa_camisa=get_data(data, 'cor_primaria_estampa_camisa'), 
+            cor_secundaria_estampa_camisa=get_data(data, 'cor_secundaria_estampa_camisa'), 
+            rodada_time_id=get_data(data, 'rodada_time_id'), 
+            assinante=get_data(data, 'assinante'), 
+            cadastro_completo=get_data(data, 'cadastro_completo'), 
+            patrocinador1_id=get_data(data, 'patrocinador1_id'), 
+            patrocinador2_id=get_data(data, 'patrocinador2_id'), 
+            temporada_inicial=get_data(data, 'temporada_inicial'), 
+            simplificado=get_data(data, 'simplificado')
         )
 
 
@@ -348,7 +350,7 @@ class Servico(object):
 
     @classmethod
     def parse_json(cls, data):
-        return cls(data['servicoId'], data['status'])
+        return cls(get_data(data, 'servicoId'),  get_data(data, 'status'))
 
 
 class TimeInfo(object):
@@ -382,16 +384,16 @@ class TimeInfo(object):
             posicoes=posicoes,
             atleta_status=atleta_status,
             time_usuario=time_usuario,
-            patrimonio=data['patrimonio'],
-            esquema_id=data['esquema_id'],
-            pontos=data['pontos'],
-            valor_time=data['valor_time'],
-            rodada_atual=data['rodada_atual'],
-            variacao_patrimonio=data['variacao_patrimonio'],
-            variacao_pontos=data['variacao_pontos'],
-            servicos=[Servico.parse_json(data_servico) for data_servico in data['servicos']],
-            total_ligas=data['total_ligas'],
-            total_ligas_matamata=data['total_ligas_matamata']
+            patrimonio=get_data(data, 'patrimonio'), 
+            esquema_id=get_data(data, 'esquema_id'), 
+            pontos=get_data(data, 'pontos'), 
+            valor_time=get_data(data, 'valor_time'), 
+            rodada_atual=get_data(data, 'rodada_atual'), 
+            variacao_patrimonio=get_data(data, 'variacao_patrimonio'), 
+            variacao_pontos=get_data(data, 'variacao_pontos'), 
+            servicos=[Servico.parse_json(data_servico) for data_servico in get_data(data, 'servicos')],
+            total_ligas=get_data(data, 'total_ligas'), 
+            total_ligas_matamata=get_data(data, 'total_ligas_matamata')
         )
 
 
@@ -411,12 +413,12 @@ class AtletaPontuacao(object):
     @classmethod
     def parse_json(cls, data):
         return cls(
-            atleta_id=data['atleta_id'],
-            rodada_id=data['rodada_id'],
-            pontos=data['pontos'],
-            preco=data['preco'],
-            variacao=data['variacao'],
-            media=data['media']
+            atleta_id=get_data(data, 'atleta_id'), 
+            rodada_id=get_data(data, 'rodada_id'), 
+            pontos=get_data(data, 'pontos'), 
+            preco=get_data(data, 'preco'), 
+            variacao=get_data(data, 'variacao'), 
+            media=get_data(data, 'media')
         )
 
 
@@ -436,12 +438,12 @@ class AtletaPontuado(object):
     @classmethod
     def parse_json(cls, data):
         return cls(
-            apelido=data['apelido'],
-            pontuacao=data['pontuacao'],
-            scout=data['scout'],
-            foto=data['foto'],
-            posicao_id=data['posicao_id'],
-            clube_id=data['clube_id']
+            apelido=get_data(data, 'apelido'), 
+            pontuacao=get_data(data, 'pontuacao'), 
+            scout=get_data(data, 'scout'), 
+            foto=get_data(data, 'foto'), 
+            posicao_id=get_data(data, 'posicao_id'), 
+            clube_id=get_data(data, 'clube_id')
         )
 
 
@@ -495,41 +497,41 @@ class Liga(object):
     @classmethod
     def parse_json(cls, data, amigos = None):
         return cls(
-            liga_id=data["liga_id"],
-            time_dono_id=data["time_dono_id"],
-            clube_id=data["clube_id"],
-            nome=data["nome"],
-            descricao=data["descricao"],
-            slug=data["slug"],
-            tipo=data["tipo"],
-            tipo_flamula=data["tipo_flamula"],
-            tipo_estampa_flamula=data["tipo_estampa_flamula"],
-            tipo_adorno_flamula=data["tipo_adorno_flamula"],
-            cor_primaria_estampa_flamula=data["cor_primaria_estampa_flamula"],
-            cor_secundaria_estampa_flamula=data["cor_secundaria_estampa_flamula"],
-            cor_borda_flamula=data["cor_borda_flamula"],
-            cor_fundo_flamula=data["cor_fundo_flamula"],
-            url_flamula_svg=data["url_flamula_svg"],
-            url_flamula_png=data["url_flamula_png"],
-            tipo_trofeu=data["tipo_trofeu"],
-            cor_trofeu=data["cor_trofeu"],
-            url_trofeu_svg=data["url_trofeu_svg"],
-            url_trofeu_png=data["url_trofeu_png"],
-            editorial=data["editorial"],
-            patrocinador=data["patrocinador"],
-            mata_mata=data["mata_mata"],
-            inicio_rodada=data["inicio_rodada"],
-            fim_rodada=data["fim_rodada"],
-            quantidade_times=data["quantidade_times"],
-            sorteada=data["sorteada"],
-            mes_ranking_num=data["mes_ranking_num"],
-            mes_variacao_num=data["mes_variacao_num"],
-            camp_ranking_num=data["camp_ranking_num"],
-            camp_variacao_num=data["camp_variacao_num"],
-            imagem=data["imagem"],
+            liga_id=get_data(data, "liga_id"), 
+            time_dono_id=get_data(data, "time_dono_id"), 
+            clube_id=get_data(data, "clube_id"), 
+            nome=get_data(data, "nome"), 
+            descricao=get_data(data, "descricao"), 
+            slug=get_data(data, "slug"), 
+            tipo=get_data(data, "tipo"), 
+            tipo_flamula=get_data(data, "tipo_flamula"), 
+            tipo_estampa_flamula=get_data(data, "tipo_estampa_flamula"), 
+            tipo_adorno_flamula=get_data(data, "tipo_adorno_flamula"), 
+            cor_primaria_estampa_flamula=get_data(data, "cor_primaria_estampa_flamula"), 
+            cor_secundaria_estampa_flamula=get_data(data, "cor_secundaria_estampa_flamula"), 
+            cor_borda_flamula=get_data(data, "cor_borda_flamula"), 
+            cor_fundo_flamula=get_data(data, "cor_fundo_flamula"), 
+            url_flamula_svg=get_data(data, "url_flamula_svg"), 
+            url_flamula_png=get_data(data, "url_flamula_png"), 
+            tipo_trofeu=get_data(data, "tipo_trofeu"), 
+            cor_trofeu=get_data(data, "cor_trofeu"), 
+            url_trofeu_svg=get_data(data, "url_trofeu_svg"), 
+            url_trofeu_png=get_data(data, "url_trofeu_png"), 
+            editorial=get_data(data, "editorial"), 
+            patrocinador=get_data(data, "patrocinador"), 
+            mata_mata=get_data(data, "mata_mata"), 
+            inicio_rodada=get_data(data, "inicio_rodada"), 
+            fim_rodada=get_data(data, "fim_rodada"), 
+            quantidade_times=get_data(data, "quantidade_times"), 
+            sorteada=get_data(data, "sorteada"), 
+            mes_ranking_num=get_data(data, "mes_ranking_num"), 
+            mes_variacao_num=get_data(data, "mes_variacao_num"), 
+            camp_ranking_num=get_data(data, "camp_ranking_num"), 
+            camp_variacao_num=get_data(data, "camp_variacao_num"), 
+            imagem=get_data(data, "imagem"), 
             amigos=amigos,
-            total_amigos_na_liga=data['total_amigos_na_liga'],
-            total_times_liga=data['total_times_liga']
+            total_amigos_na_liga=get_data(data, 'total_amigos_na_liga'), 
+            total_times_liga=get_data(data, 'total_times_liga')
         )
 
 
@@ -554,14 +556,14 @@ class Amigo(object):
     @classmethod
     def parse_json(cls, data):
         return cls(
-            time_id=data["time_id"],
-            nome=data["nome"],
-            nome_cartola=data["nome_cartola"],
-            slug=data["slug"],
-            facebook_id=data["facebook_id"],
-            url_escudo_png=data["url_escudo_png"],
-            url_escudo_svg=data["url_escudo_svg"],
-            url_escudo_placeholder_png=data["url_escudo_placeholder_png"],
-            foto_perfil=data["foto_perfil"],
-            assinante=data["assinante"]
+            time_id=get_data(data, "time_id"), 
+            nome=get_data(data, "nome"), 
+            nome_cartola=get_data(data, "nome_cartola"), 
+            slug=get_data(data, "slug"), 
+            facebook_id=get_data(data, "facebook_id"), 
+            url_escudo_png=get_data(data, "url_escudo_png"), 
+            url_escudo_svg=get_data(data, "url_escudo_svg"), 
+            url_escudo_placeholder_png=get_data(data, "url_escudo_placeholder_png"), 
+            foto_perfil=get_data(data, "foto_perfil"), 
+            assinante=get_data(data, "assinante")
         )

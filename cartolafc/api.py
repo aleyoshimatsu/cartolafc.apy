@@ -91,13 +91,14 @@ class Api(object):
 
     def obter_atleta_pontuados(self):
         mercado = self.obter_status_mercado()
-        if mercado.status_mercado.id == MercadoStatus.MERCADO_FECHADO:
+        if mercado.status_mercado == MercadoStatus.MERCADO_FECHADO:
             url = '{api_url}/atletas/pontuados'.format(api_url=self._api_url)
             data = self._request(url)
 
             data_atletas = data['atletas']
-            atletas_pontuados = dict((data_atletas['id'], AtletaPontuado.parse_json(data_atleta))
-                                    for data_atleta in data_atletas)
+            atletas_pontuados = dict((key, AtletaPontuado.parse_json(data_atletas[key]))
+                                    for key in data_atletas)
+
             return atletas_pontuados
 
         raise CartolaFCError('Pontuações parciais indisponíveis! Mercado aberto.')

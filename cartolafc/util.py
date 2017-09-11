@@ -11,3 +11,10 @@ def convert_json_to_data(json_data):
         return data
     except ValueError as error:
         raise CartolaFCError('Globo.com - Desculpe-nos, nossos servidores estão sobrecarregados.')
+
+
+def get_data(data, key):
+    if key in data and data[key]:
+        return data[key]
+    return None
+
