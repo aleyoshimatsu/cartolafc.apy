@@ -14,7 +14,7 @@ def convert_json_to_data(json_data):
 
 
 def get_data(data, key):
-    if key in data and data[key]:
+    if key in data:
         return data[key]
     return None
 

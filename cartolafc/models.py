@@ -254,7 +254,7 @@ class Clube(object):
 
 class TimeUsuario(object):
 
-    def __init__(self, time_id, clube, esquema_id, cadun_id, facebook_id, foto_perfil, nome, nome_cartola, slug,
+    def __init__(self, time_id, clube_id, clube, esquema_id, cadun_id, facebook_id, foto_perfil, nome, nome_cartola, slug,
                  tipo_escudo, cor_fundo_escudo, cor_borda_escudo, cor_primaria_estampa_escudo,
                  cor_secundaria_estampa_escudo, url_escudo_svg, url_escudo_png, url_camisa_svg,
                  url_camisa_png, url_escudo_placeholder_png, url_camisa_placeholder_png, tipo_estampa_escudo,
@@ -262,6 +262,7 @@ class TimeUsuario(object):
                  cor_secundaria_estampa_camisa, rodada_time_id, assinante, cadastro_completo, patrocinador1_id,
                  patrocinador2_id, temporada_inicial, simplificado):
         self.time_id = time_id
+        self.clube_id = clube_id
         self.clube = clube
         self.esquema_id = esquema_id
         self.cadun_id = cadun_id
@@ -300,10 +301,11 @@ class TimeUsuario(object):
         return "{time_id}-{nome}".format(id=self.time_id, nome=self.nome)
 
     @classmethod
-    def parse_json(cls, data, clubes):
+    def parse_json(cls, data, clubes=None):
         return cls(
-            time_id=get_data(data, 'time_id'), 
-            clube=clubes[get_data(data, 'clube_id')],
+            time_id=get_data(data, 'time_id'),
+            clube_id=get_data(data, 'clube_id'),
+            clube=clubes[get_data(data, 'clube_id')] if clubes is not None else None,
             esquema_id=get_data(data, 'esquema_id'), 
             cadun_id=get_data(data, 'cadun_id'), 
             facebook_id=get_data(data, 'facebook_id'), 
@@ -454,7 +456,7 @@ class Liga(object):
                  cor_fundo_flamula, url_flamula_svg, url_flamula_png, tipo_trofeu, cor_trofeu, url_trofeu_svg,
                  url_trofeu_png, editorial, patrocinador, mata_mata, inicio_rodada, fim_rodada, quantidade_times,
                  sorteada, mes_ranking_num, mes_variacao_num, camp_ranking_num, camp_variacao_num, imagem, amigos,
-                 total_amigos_na_liga, total_times_liga):
+                 total_amigos_na_liga, total_times_liga, times=None):
         self.liga_id = liga_id
         self.time_dono_id = time_dono_id
         self.clube_id = clube_id
@@ -490,12 +492,13 @@ class Liga(object):
         self.amigos = amigos
         self.total_amigos_na_liga = total_amigos_na_liga
         self.total_times_liga = total_times_liga
+        self.times = times
 
     def __str__(self):
         return "{liga_id}={nome}".format(liga_id=self.liga_id, nome=self.nome)
 
     @classmethod
-    def parse_json(cls, data, amigos = None):
+    def parse_json(cls, data, amigos=None, times=None):
         return cls(
             liga_id=get_data(data, "liga_id"), 
             time_dono_id=get_data(data, "time_dono_id"), 
@@ -531,7 +534,8 @@ class Liga(object):
             imagem=get_data(data, "imagem"), 
             amigos=amigos,
             total_amigos_na_liga=get_data(data, 'total_amigos_na_liga'), 
-            total_times_liga=get_data(data, 'total_times_liga')
+            total_times_liga=get_data(data, 'total_times_liga'),
+            times=times
         )
 
 

@@ -157,18 +157,20 @@ class Api(object):
 
         # Parsing time_usuario
         data_time_usuario = data['time_usuario']
+        time_usuario = TimeUsuario.parse_json(data_time_usuario)
 
         # Parsing amigos
         data_amigos = data['amigos']
+        amigos = list(Amigo.parse_json(data_amigo) for data_amigo in data_amigos)
 
         # Parsing destaques
-        data_destaques = data['destaques']
+        # data_destaques = data['destaques']
 
         # Parsing liga
         data_liga = data['liga']
-        liga = Liga.parse_json(data_liga)
+        liga = Liga.parse_json(data=data_liga, amigos=amigos, times=times)
 
-
+        return liga
 
 
 
