@@ -391,7 +391,7 @@ class TimeInfo(object):
             rodada_atual=get_data(data, 'rodada_atual'), 
             variacao_patrimonio=get_data(data, 'variacao_patrimonio'), 
             variacao_pontos=get_data(data, 'variacao_pontos'), 
-            servicos=[Servico.parse_json(data_servico) for data_servico in get_data(data, 'servicos')],
+            servicos=[Servico.parse_json(data_servico) for data_servico in get_data(data, 'servicos')] if 'servico' in data else [],
             total_ligas=get_data(data, 'total_ligas'), 
             total_ligas_matamata=get_data(data, 'total_ligas_matamata')
         )

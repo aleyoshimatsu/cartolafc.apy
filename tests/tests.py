@@ -51,7 +51,15 @@ def test_obter_ligas_time_logado():
     ligas = api.obter_ligas_time_logado()
     assert ligas.count() > 0
 
+
 def test_obter_liga_by_slug():
     api = Api(email="aleyoshimatsu@gmail.com", password="yoshi123")
     api.login()
     api.obter_liga_by_slug(slug='liga-showbol-2017')
+
+
+def test_obter_time_by_slug():
+    api = Api(email="aleyoshimatsu@gmail.com", password="yoshi123")
+    api.login()
+    time_info = api.obter_time_by_slug(slug='santastico-yoshi-f-c')
+    assert time_info.time_usuario.slug == 'santastico-yoshi-f-c'

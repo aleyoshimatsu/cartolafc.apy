@@ -122,20 +122,30 @@ class Api(object):
         url = '{api_url}/time/slug/{slug}'.format(api_url=self._api_url, slug=slug)
         data = self._request(url)
 
-        # Parsing atletas
-        data_atletas = data['atletas']
+        # Parsing Posicao
+        data_posicoes = data['posicoes'].values()
+        posicoes = dict((data_posicao['id'], Posicao.parse_json(data_posicao)) for data_posicao in data_posicoes)
+
+        # Parsing Status Atleta
+        data_status = data['status'].values()
+        atleta_status = dict((data_st['id'], AtletaStatus.parse_json(data_st)) for data_st in data_status)
 
         # Parsing clubes
-        data_clubes = data['clubes']
+        data_clubes = data['clubes'].values()
+        clubes = dict((data_clube['id'], Clube.parse_json(data_clube)) for data_clube in data_clubes)
 
-        # Parsing posicoes
-        data_posicoes = data['posicoes']
-
-        # Parsing status
-        data_status = data['status']
+        # Parsing atletas
+        data_atletas = data['atletas']
+        atletas = list(Atleta.parse_json(data_atleta, clubes, posicoes, atleta_status) for data_atleta in data_atletas)
 
         # Parsing time
         data_time = data['time']
+        time_usuario = TimeUsuario.parse_json(data_time, clubes)
+
+        # Parsing time info
+        time_info = TimeInfo.parse_json(data, atletas, clubes, posicoes, atleta_status, time_usuario)
+
+        return time_info
 
     def obter_liga_by_slug(self, slug):
         url = '{api_url}/auth/liga/{slug}'.format(api_url=self._api_url, slug=slug)
